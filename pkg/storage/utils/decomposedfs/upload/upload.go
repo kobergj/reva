@@ -512,16 +512,16 @@ func (upload *Upload) checkHash(expected string, h hash.Hash) error {
 func (upload *Upload) cleanup(cleanNode, cleanBin, cleanInfo bool) {
 	if cleanNode && upload.Node != nil && upload.oldsize == nil {
 		// remove node
-		if err := upload.tp.Delete(upload.Ctx, upload.Node); err != nil {
+		if err := utils.RemoveItem(upload.Node.InternalPath()); err != nil {
 			upload.log.Info().Str("path", upload.Node.InternalPath()).Err(err).Msg("removing node failed")
 		}
 
 		// remove parent entry
-		//src := filepath.Join(upload.Node.ParentInternalPath(), upload.Node.Name)
-		//if err := os.Remove(src); err != nil {
-		//upload.log.Info().Str("path", upload.Node.ParentInternalPath()).Err(err).Msg("removing node from parent failed")
+		src := filepath.Join(upload.Node.ParentInternalPath(), upload.Node.Name)
+		if err := os.Remove(src); err != nil {
+			upload.log.Info().Str("path", upload.Node.ParentInternalPath()).Err(err).Msg("removing node from parent failed")
 
-		//}
+		}
 	}
 
 	if cleanBin {
