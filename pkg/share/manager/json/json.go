@@ -21,6 +21,7 @@ package json
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -348,6 +349,7 @@ func (m *mgr) GetShare(ctx context.Context, ref *collaboration.ShareReference) (
 }
 
 func (m *mgr) Unshare(ctx context.Context, ref *collaboration.ShareReference) error {
+	fmt.Println("UNSHARE CALLED", ref)
 	m.Lock()
 	defer m.Unlock()
 	user := ctxpkg.ContextMustGetUser(ctx)

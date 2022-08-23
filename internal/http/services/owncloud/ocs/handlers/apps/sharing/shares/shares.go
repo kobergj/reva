@@ -756,6 +756,7 @@ const (
 )
 
 func (h *Handler) listSharesWithMe(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("WITH ME")
 	// which pending state to list
 	stateFilter := getStateFilter(r.FormValue("state"))
 
@@ -846,6 +847,7 @@ func (h *Handler) listSharesWithMe(w http.ResponseWriter, r *http.Request) {
 
 	// TODO(refs) filter out "invalid" shares
 	for _, rs := range lrsRes.GetShares() {
+		fmt.Println("SHARE", rs)
 		if stateFilter != ocsStateUnknown && rs.GetState() != stateFilter {
 			continue
 		}
@@ -869,10 +871,12 @@ func (h *Handler) listSharesWithMe(w http.ResponseWriter, r *http.Request) {
 					OpaqueId:  rs.Share.Id.OpaqueId,
 				}
 				info, status, err = h.getResourceInfoByID(ctx, client, mountID)
+				fmt.Println("WEIRD ACCEPTED CASE", info, status, err)
 			}
 			if rs.State != collaboration.ShareState_SHARE_STATE_ACCEPTED || err != nil || status.Code != rpc.Code_CODE_OK {
 				// fallback to unmounted resource
 				info, status, err = h.getResourceInfoByID(ctx, client, rs.Share.ResourceId)
+				fmt.Println("FALLBACK", info, status, err)
 				if err != nil || status.Code != rpc.Code_CODE_OK {
 					h.logProblems(&sublog, status, err, "could not stat, skipping")
 					continue
@@ -881,6 +885,7 @@ func (h *Handler) listSharesWithMe(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data, err := conversions.CS3Share2ShareData(r.Context(), rs.Share)
+		fmt.Println("CONVERTED", data, err)
 		if err != nil {
 			sublog.Debug().Interface("share", rs.Share).Interface("shareData", data).Err(err).Msg("could not CS3Share2ShareData, skipping")
 			continue
@@ -889,6 +894,7 @@ func (h *Handler) listSharesWithMe(w http.ResponseWriter, r *http.Request) {
 		data.State = mapState(rs.GetState())
 
 		if err := h.addFileInfo(ctx, data, info); err != nil {
+			fmt.Println("FILE INFO FAILED", err)
 			sublog.Debug().Interface("received_share", rs.Share.Id).Err(err).Msg("could not add file info, skipping")
 			continue
 		}

@@ -287,6 +287,7 @@ func (m *Manager) GetShare(ctx context.Context, ref *collaboration.ShareReferenc
 
 // Unshare deletes the share pointed by ref.
 func (m *Manager) Unshare(ctx context.Context, ref *collaboration.ShareReference) error {
+	fmt.Println("UNSHARE CALLED", ref)
 	if err := m.initialize(); err != nil {
 		return err
 	}
