@@ -24,6 +24,7 @@ package decomposedfs
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/url"
 	"os"
@@ -149,6 +150,7 @@ func New(o *options.Options, lu *lookup.Lookup, p PermissionsChecker, tp Tree, p
 		}
 	}
 
+	fmt.Println("DECOMPOSEDFS USES", o.StatCache.CacheStore, o.StatCache.CacheDatabase)
 	fs := &Decomposedfs{
 		tp:                tp,
 		lu:                lu,
@@ -222,6 +224,7 @@ func (fs *Decomposedfs) Postprocessing(ch <-chan interface{}) {
 			if p, err := node.ReadNode(ctx, fs.lu, up.Info.Storage["SpaceRoot"], n.ParentID, false); err != nil {
 				log.Error().Err(err).Str("uploadID", ev.UploadID).Msg("could not read parent")
 			} else {
+				fmt.Println("CHANGING PARENT MTIME")
 				// update parent tmtime to propagate etag change
 				now := time.Now()
 				p.SetTMTime(&now)

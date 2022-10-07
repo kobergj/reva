@@ -55,6 +55,7 @@ func (c statCache) RemoveStat(userID *userpb.UserId, res *provider.ResourceId) {
 		// FIXME handle error
 		return
 	}
+
 	for _, key := range keys {
 		if strings.Contains(key, uid) {
 			_ = c.Delete(key)

@@ -194,6 +194,7 @@ func New(m map[string]interface{}, ss *grpc.Server) (rgrpc.Service, error) {
 	}
 
 	pq, _ := bytesize.Parse(c.PersonalQuotaDefault)
+	fmt.Println("GATEWAY USES", c.CacheStore, c.CacheDatabase)
 	s := &svc{
 		c:               c,
 		dataGatewayURL:  *u,

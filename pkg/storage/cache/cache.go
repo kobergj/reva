@@ -79,6 +79,7 @@ func GetStatCache(cacheStore string, cacheNodes []string, database, table string
 	defer mutex.Unlock()
 
 	key := strings.Join(append(append([]string{cacheStore}, cacheNodes...), database, table), ":")
+	fmt.Println("AVAILABLE KEYS", statCaches, key)
 	if statCaches[key] == nil {
 		statCaches[key] = NewStatCache(cacheStore, cacheNodes, database, table, ttl)
 	}

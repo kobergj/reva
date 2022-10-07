@@ -19,6 +19,7 @@
 package spaces
 
 import (
+	"fmt"
 	"net/http"
 	"path"
 	"strings"
@@ -75,6 +76,7 @@ func New(m map[string]interface{}, publisher events.Publisher) (datatx.DataTX, e
 		return nil, err
 	}
 
+	fmt.Println("DATAGATEWAY USES", c.CacheStore, c.CacheDatabase)
 	return &manager{
 		conf:      c,
 		publisher: publisher,
