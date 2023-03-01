@@ -33,7 +33,6 @@ import (
 	"github.com/cs3org/reva/v2/internal/http/services/owncloud/ocdav/spacelookup"
 	"github.com/cs3org/reva/v2/pkg/appctx"
 	"github.com/cs3org/reva/v2/pkg/rhttp"
-	"github.com/cs3org/reva/v2/pkg/utils"
 	"github.com/rs/zerolog"
 )
 
@@ -79,10 +78,10 @@ func (s *svc) handleGet(ctx context.Context, w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	if status := utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"); status == "processing" {
-		w.WriteHeader(http.StatusTooEarly)
-		return
-	}
+	//if status := utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"); status == "processing" {
+	//w.WriteHeader(http.StatusTooEarly)
+	//return
+	//}
 
 	dReq := &provider.InitiateFileDownloadRequest{Ref: ref}
 	dRes, err := s.gwClient.InitiateFileDownload(ctx, dReq)
