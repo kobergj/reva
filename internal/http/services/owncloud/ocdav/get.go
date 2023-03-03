@@ -81,10 +81,10 @@ func (s *svc) handleGet(ctx context.Context, w http.ResponseWriter, r *http.Requ
 	}
 
 	fmt.Println("STATUS BEGIN:", utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"))
-	//if status := utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"); status == "processing" {
-	//w.WriteHeader(http.StatusTooEarly)
-	//return
-	//}
+	if status := utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"); status == "processing" {
+		w.WriteHeader(http.StatusTooEarly)
+		return
+	}
 
 	dReq := &provider.InitiateFileDownloadRequest{Ref: ref}
 	dRes, err := s.gwClient.InitiateFileDownload(ctx, dReq)
