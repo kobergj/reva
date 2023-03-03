@@ -1219,7 +1219,7 @@ func (n *Node) UnmarkProcessing(uploadID string) error {
 		return nil
 	}
 	fmt.Println("XATTR REMOVED")
-	return n.RemoveXattr(prefixes.StatusPrefix)
+	return n.SetXattr(prefixes.StatusPrefix, "")
 }
 
 // IsProcessing returns true if the node is currently being processed
