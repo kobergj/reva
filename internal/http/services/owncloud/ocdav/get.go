@@ -20,6 +20,7 @@ package ocdav
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"path"
@@ -33,6 +34,7 @@ import (
 	"github.com/cs3org/reva/v2/internal/http/services/owncloud/ocdav/spacelookup"
 	"github.com/cs3org/reva/v2/pkg/appctx"
 	"github.com/cs3org/reva/v2/pkg/rhttp"
+	"github.com/cs3org/reva/v2/pkg/utils"
 	"github.com/rs/zerolog"
 )
 
@@ -78,6 +80,7 @@ func (s *svc) handleGet(ctx context.Context, w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	fmt.Println("STATUS BEGIN:", utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"))
 	//if status := utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"); status == "processing" {
 	//w.WriteHeader(http.StatusTooEarly)
 	//return
@@ -146,6 +149,8 @@ func (s *svc) handleGet(ctx context.Context, w http.ResponseWriter, r *http.Requ
 			log.Error().Int64("content-length", i).Int64("transferred-bytes", c).Msg("content length vs transferred bytes mismatch")
 		}
 	}
+
+	fmt.Println("STATUS END:", utils.ReadPlainFromOpaque(sRes.GetInfo().GetOpaque(), "status"))
 	// TODO we need to send the If-Match etag in the GET to the datagateway to prevent race conditions between stating and reading the file
 }
 
