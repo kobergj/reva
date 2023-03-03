@@ -129,6 +129,7 @@ func Cleanup(upload *Upload, failure bool, keepUpload bool) {
 	upload.cleanup(failure, !keepUpload, !keepUpload)
 
 	// unset processing status
+	fmt.Println("NODE IS", upload.Node)
 	if upload.Node != nil { // node can be nil when there was an error before it was created (eg. checksum-mismatch)
 		if err := upload.Node.UnmarkProcessing(upload.Info.ID); err != nil {
 			upload.log.Info().Str("path", upload.Node.InternalPath()).Err(err).Msg("unmarking processing failed")

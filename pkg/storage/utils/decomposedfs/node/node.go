@@ -1212,10 +1212,13 @@ func (n *Node) FindStorageSpaceRoot() error {
 // UnmarkProcessing removes the processing flag from the node
 func (n *Node) UnmarkProcessing(uploadID string) error {
 	v, _ := n.Xattr(prefixes.StatusPrefix)
+	fmt.Println("UNMARKING status:", v, "uploadID", uploadID)
 	if v != ProcessingStatus+uploadID {
 		// file started another postprocessing later - do not remove
+		fmt.Println("NOT REMOVED")
 		return nil
 	}
+	fmt.Println("XATTR REMOVED")
 	return n.RemoveXattr(prefixes.StatusPrefix)
 }
 

@@ -234,6 +234,7 @@ func (fs *Decomposedfs) Postprocessing(ch <-chan events.Event) {
 			// remove cache entry in gateway
 			fs.cache.RemoveStat(ev.ExecutingUser.GetId(), &provider.ResourceId{SpaceId: n.SpaceID, OpaqueId: n.ID})
 
+			fmt.Println("CLEANUP")
 			upload.Cleanup(up, failed, keepUpload)
 
 			if err := events.Publish(
